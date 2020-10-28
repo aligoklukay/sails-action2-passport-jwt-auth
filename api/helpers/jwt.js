@@ -14,7 +14,6 @@ module.exports = {
 
   exits: {
     success: {
-      statusCode: 200,
       description: "JWT returned succesfully.",
     },
     invalid: {
@@ -22,10 +21,9 @@ module.exports = {
       extendedDescription:
         "If this request was sent from a graphical user interface, the request " +
         "parameters should have been validated/coerced _before_ they were sent.",
-      statusCode: 400,
     },
     errorRequest: {
-      statusCode: 500,
+      description: "Error on request happened."
     },
   },
 

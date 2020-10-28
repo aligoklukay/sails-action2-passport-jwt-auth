@@ -34,18 +34,30 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     try {
-      let user = await User.create({
+      let userSignup = await User.findOne({
         email: inputs.email,
-        password: inputs.password,
-      }).fetch();
-
-      return exits.success({
-        user,
-        token: await sails.helpers.jwt(user),
       });
+
+      if (!userSignup) {
+        let user = await User.create({
+          email: inputs.email,
+          password: inputs.password,
+        }).fetch();
+
+        return exits.success({
+          status: true,
+          user,
+          token: await sails.helpers.jwt(user),
+        });
+      } else {
+        return exits.invalid({ status: false, message: "The mail you have entered is already signed in our system." });
+      }
     } catch (error) {
       console.log(error);
-      return exits.invalid({ message: "A problem occured." });
+      return exits.errorRequest({
+        status: false,
+        message: "A problem occured.",
+      });
     }
   },
 };
